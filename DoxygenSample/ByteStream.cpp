@@ -1,4 +1,6 @@
 #include "ByteStream.h"
+#include <stdexcept>
+#include <iostream>
 
 ByteStream::ByteStream(size_t size)
 	: m_wPos(0)
@@ -12,6 +14,15 @@ ByteStream::ByteStream(size_t size)
 ByteStream::ByteStream()
 {
 	delete m_buffer;
+}
+
+void ByteStream::checkSize(size_t dataSize)
+{
+	if (m_wPos + dataSize > m_size) {
+		const char* errMsg = "Error ByteStream - Buffer not large enough";
+		std::cerr << errMsg << std::endl;
+		throw std::runtime_error(errMsg);
+	}
 }
 
 

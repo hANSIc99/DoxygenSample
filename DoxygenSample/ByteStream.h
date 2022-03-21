@@ -1,6 +1,6 @@
 #pragma once
 
-#include <any>
+#include <string>
 
 class ByteStream {
 
@@ -15,20 +15,38 @@ public:
 
 	template<typename T>
 	ByteStream& operator<<(T data) {
+		size_t dataSize = sizeof(T);
+		checkSize(dataSize);
+
 		*reinterpret_cast<T*>(m_buffer + m_wPos) = data;
-		m_wPos += sizeof(T);
+		m_wPos += dataSize;
 		return *this;
 	}
 	ByteStream& operator<<(const char* data) {
+
+		size_t dataSize = strlen(data) + 1; // include the terminating 0-byte
+		checkSize(dataSize);
+
 		strcpy(m_buffer + m_wPos, data);
-		m_wPos += strlen(data) + 1; // including hte terminating 0-byte
+		m_wPos += dataSize;
 		return *this;
 	}
 	
+	template<typename T>
+	ByteStream& operator>>(T &n) {
+		size_t dataSize = sizeof(T);
+		n = *reinterpret_cast<T*>(m_buffer + m_rPos);
+		m_rPos += dataSize;
+		return *this;
+	}
 
 ; private:
-	unsigned long	m_wPos;
-	unsigned long	m_rPos;
+
+	void checkSize(size_t dataSize);
+
+	size_t			m_wPos;
+	size_t			m_rPos;
 	size_t			m_size;
 	char*			m_buffer;
+
 };

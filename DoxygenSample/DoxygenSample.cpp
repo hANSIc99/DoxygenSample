@@ -11,10 +11,14 @@ int main()
 {
 	cout << "Hello CMake." << endl;
 	ByteStream stream = ByteStream(20);
-	stream << "HELLO" << "world";
-	stream << (int)0xAA << (short)0xBB;
-	//stream.write('A');
 	
+	stream << (long)0xAA << (long)0xBB << (long)0xCC;
+	//stream << "Hallo ihr Pupspüpchen" << "world";
+	//stream.write('A');
 
+	long test_a = 123;
+	long test_b = 123;
+	stream >> test_a >> test_b;
+	cout << "Ende CMake." << endl;
 	return 0;
 }
