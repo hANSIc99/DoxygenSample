@@ -17,16 +17,17 @@
 #define BYTESTREAM_H
 
 #include <string>
+#include <cstring>
 
 class ByteStream {
 
 public:
-	ByteStream::ByteStream(size_t size);
-	ByteStream::ByteStream();
+	ByteStream(size_t size);
+	ByteStream();
 
 
 	// https://stackoverflow.com/questions/1639797/template-issue-causes-linker-error-c
-	// Template function müssen in den Header
+	// Template function mï¿½ssen in den Header
 	//void write(std::any data);
 
 	// Writing Template
