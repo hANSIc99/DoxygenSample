@@ -1,3 +1,19 @@
+/*
+ * This file is part of ByteStream.
+ *
+ * ByteStream is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * Pythonic is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with Pythonic. If not, see <https://www.gnu.org/licenses/>
+ */
+
+
 #include "ByteStream.h"
 #include <stdexcept>
 #include <iostream>
@@ -25,5 +41,32 @@ void ByteStream::checkSize(size_t dataSize)
 	}
 }
 
+ByteStream& ByteStream::operator<<(const char* data)
+{
 
-// reinterpret_cast<const char*>
+	size_t dataSize = strlen(data) + 1; // include the terminating 0-byte
+	checkSize(dataSize);
+
+	strcpy(m_buffer + m_wPos, data);
+	m_wPos += dataSize;
+	return *this;
+}
+
+ByteStream& ByteStream::operator<<(const std::string& str)
+{
+	size_t dataSize = str.length() + 1; // include the terminating 0-byte
+	checkSize(dataSize);
+
+	strcpy(m_buffer + m_wPos, str.c_str());
+	m_wPos += dataSize;
+	return *this;
+}
+
+ByteStream& ByteStream::operator>>(std::string& str)
+{
+	const char* bufStr = reinterpret_cast<char*>(m_buffer + m_rPos);
+	size_t length = strlen(bufStr);
+	str += bufStr;
+	m_rPos += length + 1;
+	return *this;
+}

@@ -1,4 +1,20 @@
-#pragma once
+/*
+ * This file is part of ByteStream.
+ * 
+ * ByteStream is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * Pythonic is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with Pythonic. If not, see <https://www.gnu.org/licenses/>
+ */
+
+#ifndef BYTESTREAM_H
+#define BYTESTREAM_H
 
 #include <string>
 
@@ -13,6 +29,7 @@ public:
 	// Template function müssen in den Header
 	//void write(std::any data);
 
+	// Writing Template
 	template<typename T>
 	ByteStream& operator<<(T data) {
 		size_t dataSize = sizeof(T);
@@ -22,16 +39,11 @@ public:
 		m_wPos += dataSize;
 		return *this;
 	}
-	ByteStream& operator<<(const char* data) {
+	// Writing strings 
+	ByteStream& operator<<(const char* data);
+	ByteStream& operator<<(const std::string &str);
 
-		size_t dataSize = strlen(data) + 1; // include the terminating 0-byte
-		checkSize(dataSize);
-
-		strcpy(m_buffer + m_wPos, data);
-		m_wPos += dataSize;
-		return *this;
-	}
-	
+	// Reading Template
 	template<typename T>
 	ByteStream& operator>>(T &n) {
 		size_t dataSize = sizeof(T);
@@ -39,6 +51,9 @@ public:
 		m_rPos += dataSize;
 		return *this;
 	}
+	// Reading strings
+	ByteStream& operator>>(std::string& str);
+
 
 ; private:
 
@@ -50,3 +65,4 @@ public:
 	char*			m_buffer;
 
 };
+#endif // BYTESTREAM_H
