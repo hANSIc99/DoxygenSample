@@ -5,12 +5,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * Pythonic is distributed in the hope that it will be useful,
+ * ByteStream is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * You should have received a copy of the GNU General Public License
- * along with Pythonic. If not, see <https://www.gnu.org/licenses/>
+ * along with ByteStream. If not, see <https://www.gnu.org/licenses/>
  */
 
 
@@ -22,14 +22,48 @@ ByteStream::ByteStream(size_t size)
 	: m_wPos(0)
 	, m_rPos(0)
 	, m_size(size)
+	, m_buffer(new char[size])
 {
-	m_buffer = new char[size];
-	memset(m_buffer, 0, size); // debug
 }
 
-ByteStream::ByteStream()
+ByteStream::~ByteStream()
 {
-	delete m_buffer;
+	std::cout << "Destructor called" << std::endl;
+	delete [] m_buffer;
+}
+
+ByteStream::ByteStream(const ByteStream& other)
+	: m_wPos(other.m_wPos)
+	, m_rPos(other.m_rPos)
+	, m_size(other.m_size)
+	, m_buffer(new char[m_size])
+{
+	std::cout << "CopyConstructor called" << std::endl;
+	std::copy(other.m_buffer, other.m_buffer + m_size, m_buffer);
+	//memcpy(m_buffer, other.m_buffer, m_size);
+}
+
+ByteStream& ByteStream::operator=(const ByteStream& other)
+{
+	//https://stackoverflow.com/questions/3279543/what-is-the-copy-and-swap-idiom
+
+	// Kein self-assignemnt test (this != &other)
+
+	// statt memcpy std::copy verwenden
+	std::cout << "Copy Assignment called" << std::endl;
+	if (m_buffer != other.m_buffer) {
+		std::cout << "Copy Assignment: Make deep copy" << std::endl;
+		delete m_buffer;
+		m_wPos = other.m_wPos;
+		m_rPos = other.m_rPos;
+		m_size = other.m_size;
+		m_buffer = new char[m_size];
+		memcpy(m_buffer, other.m_buffer, m_size);
+	}
+	else {
+		std::cout << "Copy Assignment: Make shallow copy" << std::endl;
+	}
+	return *this;
 }
 
 void ByteStream::checkSize(size_t dataSize)

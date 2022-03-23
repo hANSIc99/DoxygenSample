@@ -5,12 +5,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * Pythonic is distributed in the hope that it will be useful,
+ * ByteStream is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * You should have received a copy of the GNU General Public License
- * along with Pythonic. If not, see <https://www.gnu.org/licenses/>
+ * along with ByteStream. If not, see <https://www.gnu.org/licenses/>
  */
 
 #ifndef BYTESTREAM_H
@@ -18,16 +18,21 @@
 
 #include <string>
 #include <cstring>
+#include <algorithm>
 
 class ByteStream {
 
 public:
 	ByteStream(size_t size);
-	ByteStream();
+	~ByteStream();
 
+	// Copy constructor
+	ByteStream(const ByteStream& stream);
+	// Copy assignment
+	ByteStream& operator=(const ByteStream& stream);
 
 	// https://stackoverflow.com/questions/1639797/template-issue-causes-linker-error-c
-	// Template function m�ssen in den Header
+	// Template function muessen in den Header
 	//void write(std::any data);
 
 	// Writing Template
@@ -55,6 +60,12 @@ public:
 	// Reading strings
 	ByteStream& operator>>(std::string& str);
 
+	// Copy-and-swap idiom
+	void swap(ByteStream& other) {
+		std::swap(m_wPos, other.m_wPos);
+		std::swap(m_rPos, other.m_rPos);
+		std::swap(m_size, other.m_size);
+	}
 
 ; private:
 

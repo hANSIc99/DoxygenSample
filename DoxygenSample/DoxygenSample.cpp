@@ -24,7 +24,14 @@ int main()
 	std::cout << "val_b: " << val_b << std::endl;
 	std::cout << "val_c: " << val_c << std::endl;
 
-	stream >> val_d >> val_d >> val_d;
-	std::cout << "val_d: " << val_d;
+	ByteStream anotherStream(stream);
+	anotherStream >> val_d >> val_d >> val_d;
+	std::cout << "val_d: " << val_d << std::endl;
+	//ByteStream copyStream(10);
+
+	//copyStream = anotherStream;
+	//anotherStream = copyStream;
+	//copyStream >> val_d >> val_d >> val_d;
+	//std::cout << "val_d: " << val_d << std::endl;
 	return 0;
 }
