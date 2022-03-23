@@ -40,30 +40,43 @@ ByteStream::ByteStream(const ByteStream& other)
 {
 	std::cout << "CopyConstructor called" << std::endl;
 	std::copy(other.m_buffer, other.m_buffer + m_size, m_buffer);
-	//memcpy(m_buffer, other.m_buffer, m_size);
 }
 
 ByteStream& ByteStream::operator=(const ByteStream& other)
 {
 	//https://stackoverflow.com/questions/3279543/what-is-the-copy-and-swap-idiom
-
+	std::cout << "Assignment constructor called" << std::endl;
+	ByteStream tmp(other); // Invoke the copy CTOR
 	// Kein self-assignemnt test (this != &other)
-
-	// statt memcpy std::copy verwenden
-	std::cout << "Copy Assignment called" << std::endl;
-	if (m_buffer != other.m_buffer) {
-		std::cout << "Copy Assignment: Make deep copy" << std::endl;
-		delete m_buffer;
-		m_wPos = other.m_wPos;
-		m_rPos = other.m_rPos;
-		m_size = other.m_size;
-		m_buffer = new char[m_size];
-		memcpy(m_buffer, other.m_buffer, m_size);
-	}
-	else {
-		std::cout << "Copy Assignment: Make shallow copy" << std::endl;
-	}
+	// Swap the contents with other (which is a copy of the rhs value)
+	// When this assignment ctor is executed, the destructor of other is called
+	
+	swap(tmp);
 	return *this;
+}
+
+ByteStream::ByteStream(ByteStream&& other) noexcept
+	: m_wPos(other.m_wPos)
+	, m_rPos(other.m_rPos)
+	, m_size(other.m_size)
+	, m_buffer(other.m_buffer)
+{
+	std::cout << "Move CTOR called" << std::endl;
+	other.m_buffer = nullptr; // make call to delete in destructor of other harmless
+}
+
+ByteStream& ByteStream::operator=(ByteStream&& other) noexcept {
+	std::cout << "Move assignment CTOR called" << std::endl;
+	swap(other);
+	return *this;
+}
+
+void ByteStream::swap(ByteStream& other)
+{
+	std::swap(m_wPos,	other.m_wPos);
+	std::swap(m_rPos,	other.m_rPos);
+	std::swap(m_size,	other.m_size);
+	std::swap(m_buffer, other.m_buffer);
 }
 
 void ByteStream::checkSize(size_t dataSize)

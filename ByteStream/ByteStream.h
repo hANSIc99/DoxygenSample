@@ -24,12 +24,24 @@ class ByteStream {
 
 public:
 	ByteStream(size_t size);
+	// Destructor
 	~ByteStream();
-
 	// Copy constructor
 	ByteStream(const ByteStream& stream);
 	// Copy assignment
-	ByteStream& operator=(const ByteStream& stream);
+	// Pass by value to invoke the copy ctor
+	ByteStream& operator=(const ByteStream& other);
+	// Move constructor
+	// The move contructor is called instead of the default constructor
+	// and ,,steals" the ressources of the argu,ent (,,ressource stealing")
+	ByteStream(ByteStream&& other) noexcept;
+
+	// Move assignment 
+	ByteStream& operator=(ByteStream&& other) noexcept;
+
+
+
+
 
 	// https://stackoverflow.com/questions/1639797/template-issue-causes-linker-error-c
 	// Template function muessen in den Header
@@ -61,11 +73,8 @@ public:
 	ByteStream& operator>>(std::string& str);
 
 	// Copy-and-swap idiom
-	void swap(ByteStream& other) {
-		std::swap(m_wPos, other.m_wPos);
-		std::swap(m_rPos, other.m_rPos);
-		std::swap(m_size, other.m_size);
-	}
+	//TODO noexcept ??
+	void swap(ByteStream& other);
 
 ; private:
 
