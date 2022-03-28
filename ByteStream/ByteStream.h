@@ -16,16 +16,16 @@
 #ifndef BYTESTREAM_H
 #define BYTESTREAM_H
 
+#include <cstddef>
 #include <string>
 #include <cstring>
 #include <algorithm>
 
 
 /*!
- * A brief history of JavaDoc-style (C-style) comments.
+ * A stream class to operate on raw memory buffers (char*)
  *
- * This is the typical JavaDoc-style C-style comment. It starts with two
- * asterisks.
+ * ByteStream takes the size of a
  *
  * @param theory Even if there is only one possible unified theory. it is just a
  *               set of rules and equations.
@@ -34,7 +34,9 @@
 class ByteStream {
 
 public:
+
 	ByteStream(size_t size);
+	ByteStream(const char* pBuf, size_t size);
 	// Destructor
 	~ByteStream();
 	// Copy constructor
@@ -58,7 +60,13 @@ public:
 	// Template function muessen in den Header
 	//void write(std::any data);
 
-	// Writing Template
+	/******************************
+	 *                            *
+	 *          WRINTING          *
+	 *                            *
+	 ******************************/
+
+	/*! Template for writing basic types with known size at compile time */
 	template<typename T>
 	ByteStream& operator<<(T data) {
 		size_t dataSize = sizeof(T);
@@ -68,11 +76,21 @@ public:
 		m_wPos += dataSize;
 		return *this;
 	}
-	// Writing strings 
+
+	/*! Specialization for writing c-style strings */
 	ByteStream& operator<<(const char* data);
+	/*! Specialization for writing C++ standard library strings */
 	ByteStream& operator<<(const std::string &str);
 
-	// Reading Template
+
+
+	/******************************
+	 *                            *
+	 *          READING           *
+	 *                            *
+	 ******************************/
+
+	/*! Template for reading basic types with known size at compile time */
 	template<typename T>
 	ByteStream& operator>>(T &n) {
 		size_t dataSize = sizeof(T);
@@ -80,7 +98,7 @@ public:
 		m_rPos += dataSize;
 		return *this;
 	}
-	// Reading strings
+	/*! Specialization for reading C++ standard library strings */
 	ByteStream& operator>>(std::string& str);
 
 	// Copy-and-swap idiom
