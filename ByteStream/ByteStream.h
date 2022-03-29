@@ -36,7 +36,7 @@ class ByteStream {
 public:
 
 	ByteStream(size_t size);
-	ByteStream(const char* pBuf, size_t size);
+	ByteStream(char* pBuf, size_t size);
 	// Destructor
 	~ByteStream();
 	// Copy constructor
@@ -44,9 +44,10 @@ public:
 	// Copy assignment
 	// Pass by value to invoke the copy ctor
 	ByteStream& operator=(const ByteStream& other);
+
 	// Move constructor
 	// The move contructor is called instead of the default constructor
-	// and ,,steals" the ressources of the argu,ent (,,ressource stealing")
+	// and ,,steals" the ressources of the argument (,,ressource stealing")
 	ByteStream(ByteStream&& other) noexcept;
 
 	// Move assignment 
@@ -113,6 +114,7 @@ public:
 	size_t			m_rPos;
 	size_t			m_size;
 	char*			m_buffer;
+	bool			m_ownBuffer; // indicates whether we use our own or an external buffer
 
 };
 #endif // BYTESTREAM_H

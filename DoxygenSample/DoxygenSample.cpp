@@ -6,7 +6,10 @@
 int main()
 {
 	std::cout << "Doxygen Example" << std::endl;
-	ByteStream stream = ByteStream(100);
+
+	char* buffer = new char[100];
+	//ByteStream stream = ByteStream(100);
+	ByteStream stream = ByteStream(buffer, 100);
 	std::string hello("Hello ");
 	// Writing to the stream
 	stream << (long)0xAA << (short)0xBB << (double)3.14;
@@ -32,16 +35,21 @@ int main()
 	ByteStream copyStream(10);
 	copyStream = anotherStream;
 
+
 	// Invoke the move CTOR
 	ByteStream movedStream(std::move(copyStream));
+	
 	// copyStream cannot be used anymore
 
 	// Invoke the move assignment CTOR
 	ByteStream movedAssignStream(30);
 	movedAssignStream = std::move(movedStream);
 	
-
+	
 	movedAssignStream >> val_d >> val_d >> val_d;
 	std::cout << "val_d: " << val_d << std::endl;
+
+
+
 	return 0;
 }
