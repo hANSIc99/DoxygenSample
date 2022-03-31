@@ -29,7 +29,7 @@ ByteStream::ByteStream(size_t size)
 {
 }
 
-ByteStream::ByteStream(char* pBuf, size_t size)
+ByteStream::ByteStream(char* pBuf, size_t size) noexcept
 	: m_wPos(0)
 	, m_rPos(0)
 	, m_size(size)

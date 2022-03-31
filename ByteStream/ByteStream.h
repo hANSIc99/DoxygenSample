@@ -49,7 +49,7 @@ public:
 	 */
 	ByteStream(size_t size);
 	/*! Constructor which takes an external buffer to operate on */
-	ByteStream(char* pBuf, size_t size); 
+	ByteStream(char* pBuf, size_t size) noexcept; 
 	// Destructor
 	~ByteStream();
 	// Copy constructor
@@ -67,18 +67,10 @@ public:
 	ByteStream& operator=(ByteStream&& other) noexcept;
 
 
-
-
-
 	// https://stackoverflow.com/questions/1639797/template-issue-causes-linker-error-c
 	// Template function muessen in den Header
 	//void write(std::any data);
 
-	/******************************
-	 *                            *
-	 *          WRINTING          *
-	 *                            *
-	 ******************************/
 
 	 /** @name Writing
 	 *  Operators for writing to the stream
@@ -106,13 +98,6 @@ public:
 	 *  Operators for reading from the stream
 	 *  @{
 	 */
-	
-
-	/******************************
-	 *                            *
-	 *          READING           *
-	 *                            *
-	 ******************************/
 
 	/*! Template for reading basic types with known size at compile time */
 	template<typename T>
@@ -126,13 +111,11 @@ public:
 	ByteStream& operator>>(std::string& str);
 
 	/** @} */
+	
 
-	// Copy-and-swap idiom
-	//TODO noexcept ??
+private:
+
 	void swap(ByteStream& other);
-
-; private:
-
 	void checkSize(size_t dataSize);
 
 	size_t			m_wPos;	
