@@ -21,6 +21,10 @@
 #include <cstring>
 #include <algorithm>
 
+/*! \file 
+ *  docs for this file
+ */
+
 
 /*!
  * A stream class to operate on raw memory buffers (char*)
@@ -31,12 +35,21 @@
  *               set of rules and equations.
  */
 
+namespace BStream {
+
+
+
 class ByteStream {
 
 public:
-
+	/*! \brief Constructor to allocates a new buffer
+	 *         
+	 *
+	 *  Detailed description starts here.
+	 */
 	ByteStream(size_t size);
-	ByteStream(char* pBuf, size_t size);
+	/*! Constructor which takes an external buffer to operate on */
+	ByteStream(char* pBuf, size_t size); 
 	// Destructor
 	~ByteStream();
 	// Copy constructor
@@ -67,6 +80,11 @@ public:
 	 *                            *
 	 ******************************/
 
+	 /** @name Writing
+	 *  Operators for writing to the stream
+	 *  @{
+	 */
+
 	/*! Template for writing basic types with known size at compile time */
 	template<typename T>
 	ByteStream& operator<<(T data) {
@@ -83,7 +101,12 @@ public:
 	/*! Specialization for writing C++ standard library strings */
 	ByteStream& operator<<(const std::string &str);
 
-
+	/** @} 
+	 * @name Reading
+	 *  Operators for reading from the stream
+	 *  @{
+	 */
+	
 
 	/******************************
 	 *                            *
@@ -102,6 +125,8 @@ public:
 	/*! Specialization for reading C++ standard library strings */
 	ByteStream& operator>>(std::string& str);
 
+	/** @} */
+
 	// Copy-and-swap idiom
 	//TODO noexcept ??
 	void swap(ByteStream& other);
@@ -110,11 +135,13 @@ public:
 
 	void checkSize(size_t dataSize);
 
-	size_t			m_wPos;
-	size_t			m_rPos;
+	size_t			m_wPos;	
+	size_t			m_rPos;	
 	size_t			m_size;
 	char*			m_buffer;
 	bool			m_ownBuffer; // indicates whether we use our own or an external buffer
 
 };
+
+} // namespace
 #endif // BYTESTREAM_H

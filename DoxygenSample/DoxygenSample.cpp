@@ -2,6 +2,7 @@
 #include <iostream>
 #include "ByteStream.h"
 
+using namespace BStream;
 
 int main()
 {

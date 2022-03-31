@@ -18,6 +18,8 @@
 #include <stdexcept>
 #include <iostream>
 
+namespace BStream {
+
 ByteStream::ByteStream(size_t size)
 	: m_wPos(0)
 	, m_rPos(0)
@@ -135,3 +137,5 @@ ByteStream& ByteStream::operator>>(std::string& str)
 	m_rPos += length + 1;
 	return *this;
 }
+
+} // namespace
