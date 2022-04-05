@@ -3,6 +3,7 @@ out/
 build/
 html/
 latex/
+.cache/
 # Prerequisites
 *.d
 

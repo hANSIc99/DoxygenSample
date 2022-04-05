@@ -42,20 +42,38 @@ namespace BStream {
 class ByteStream {
 
 public:
-	/*! \brief Constructor to allocates a new buffer
+	/*! @brief Constructor to allocates a new buffer
 	 *         
-	 *
-	 *  Detailed description starts here.
+	 * The internal buffer is allocated on the heap owned by the instance.
+	 * Memory and size can be accessed by buffer() and size().
+	 * 
+	 * @param[in] size The size of the buffer
 	 */
 	ByteStream(size_t size);
-	/*! Constructor which takes an external buffer to operate on */
+
+	/*! @brief Constructor which takes an external buffer to operate on
+	 *         
+	 * The specified buffer already exist.
+	 * Memory and size can be accessed by buffer() and size().
+	 *
+	 * @param[in] pBug Pointer to existing buffer
+	 * @param[in] size Size of the existing buffer
+	 */
 	ByteStream(char* pBuf, size_t size) noexcept; 
+
 	// Destructor
 	~ByteStream();
-	// Copy constructor
+
+	/*! @brief Copy constructor
+	 *
+	 * Creates a deep copy.
+	 */
 	ByteStream(const ByteStream& stream);
-	// Copy assignment
-	// Pass by value to invoke the copy ctor
+
+	/*! @brief Copy assignment
+	 *
+	 * Invokes ByteStream(const ByteStream& stream) internally. Does not perform a self-assignemnt test.
+	 */
 	ByteStream& operator=(const ByteStream& other);
 
 	// Move constructor
@@ -77,7 +95,11 @@ public:
 	 *  @{
 	 */
 
-	/*! Template for writing basic types with known size at compile time */
+
+	/*! @brief Template for writing basic types with known size at compile time
+	 *
+	 * For a list of basic types and their size refer to  [cppreference.com](https://en.cppreference.com/w/cpp/language/types)
+	 */
 	template<typename T>
 	ByteStream& operator<<(T data) {
 		size_t dataSize = sizeof(T);
@@ -88,10 +110,18 @@ public:
 		return *this;
 	}
 
-	/*! Specialization for writing c-style strings */
+	/*! @brief Specialization for writing c-style strings
+	 *
+	 * The string is written till the occurence and including the the null byte.
+	 */
 	ByteStream& operator<<(const char* data);
-	/*! Specialization for writing C++ standard library strings */
+
+	/*! @brief Specialization for writing C++ standard library strings
+	 *
+	 * For std::string refer to [cppreference.com](https://en.cppreference.com/w/cpp/string/basic_string).
+	 */
 	ByteStream& operator<<(const std::string &str);
+
 
 	/** @} 
 	 * @name Reading
@@ -99,7 +129,11 @@ public:
 	 *  @{
 	 */
 
-	/*! Template for reading basic types with known size at compile time */
+
+	/*! @brief Template for reading basic types with known size at compile time
+	 *
+	 * For a list of basic types and their size refer to  [cppreference.com](https://en.cppreference.com/w/cpp/language/types).
+	 */
 	template<typename T>
 	ByteStream& operator>>(T &n) {
 		size_t dataSize = sizeof(T);
@@ -107,11 +141,20 @@ public:
 		m_rPos += dataSize;
 		return *this;
 	}
-	/*! Specialization for reading C++ standard library strings */
+
+	/*! @brief Specialization for reading C++ standard library strings
+	 *
+	 * For std::string refer to [cppreference.com](https://en.cppreference.com/w/cpp/string/basic_string)
+	 */
 	ByteStream& operator>>(std::string& str);
 
 	/** @} */
 	
+	//! Returns a pointer to the memory buffer
+	char* 	buffer() const noexcept;
+	//! Returns the size of the used memory buffer
+	size_t	size() const noexcept;
+
 
 private:
 

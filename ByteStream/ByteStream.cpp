@@ -18,6 +18,8 @@
 #include <stdexcept>
 #include <iostream>
 
+//#define TRACE
+
 namespace BStream {
 
 ByteStream::ByteStream(size_t size)
@@ -40,7 +42,9 @@ ByteStream::ByteStream(char* pBuf, size_t size) noexcept
 
 ByteStream::~ByteStream()
 {
+	#ifdef TRACE
 	std::cout << "Destructor called" << std::endl;
+	#endif
 	if(m_ownBuffer) delete [] m_buffer;
 }
 
@@ -52,20 +56,19 @@ ByteStream::ByteStream(const ByteStream& other)
 	, m_buffer(new char[m_size])
 	, m_ownBuffer(true)
 {
+	#ifdef TRACE
 	std::cout << "CopyConstructor called" << std::endl;
+	#endif
 	std::copy(other.m_buffer, other.m_buffer + m_size, m_buffer);
 }
 // Copy assignment
 ByteStream& ByteStream::operator=(const ByteStream& other)
 {
-	//https://stackoverflow.com/questions/3279543/what-is-the-copy-and-swap-idiom
+	#ifdef TRACE
 	std::cout << "Assignment constructor called" << std::endl;
+	#endif
 	ByteStream tmp(other); // Invoke the copy CTOR
 
-	// Kein self-assignemnt test (this != &other)
-	// Swap the contents with other (which is a copy of the rhs value)
-	// When this assignment ctor is executed, the destructor of other is called
-	
 	swap(tmp);
 	return *this;
 }
@@ -77,12 +80,16 @@ ByteStream::ByteStream(ByteStream&& other) noexcept
 	, m_buffer(other.m_buffer)
 	, m_ownBuffer(other.m_ownBuffer)
 {
+	#ifdef TRACE
 	std::cout << "Move CTOR called" << std::endl;
+	#endif
 	other.m_buffer = nullptr; // make call to delete in destructor of instance ,,other" harmless
 }
 // Move assignment
 ByteStream& ByteStream::operator=(ByteStream&& other) noexcept {
+	#ifdef TRACE
 	std::cout << "Move assignment CTOR called" << std::endl;
+	#endif
 	// Steal the values of the ByteStream instance passed as argument
 	swap(other);
 	return *this;
@@ -137,5 +144,17 @@ ByteStream& ByteStream::operator>>(std::string& str)
 	m_rPos += length + 1;
 	return *this;
 }
+
+char* ByteStream::buffer() const noexcept 
+{
+	return m_buffer;
+}
+
+size_t ByteStream::size() const noexcept
+{
+	return m_size;
+}
+
+
 
 } // namespace
