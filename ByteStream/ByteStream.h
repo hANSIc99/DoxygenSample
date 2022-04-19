@@ -19,24 +19,16 @@
 #include <cstddef>
 #include <string>
 #include <cstring>
-#include <algorithm>
 
-/*! \file 
- *  docs for this file
- */
-
-
-/*!
- * A stream class to operate on raw memory buffers (char*)
- *
- * ByteStream takes the size of a
- *
- * @param theory Even if there is only one possible unified theory. it is just a
- *               set of rules and equations.
+/*! @file 
+ *  Contains the declaration of the BStream::ByteStream class.
  */
 
 namespace BStream {
 
+/*! @class ByteStream
+ * A stream class to operate on raw memory buffers (char*)
+ */
 
 
 class ByteStream {
@@ -56,7 +48,7 @@ public:
 	 * The specified buffer already exist.
 	 * Memory and size can be accessed by buffer() and size().
 	 *
-	 * @param[in] pBug Pointer to existing buffer
+	 * @param[in] pBuf Pointer to existing buffer
 	 * @param[in] size Size of the existing buffer
 	 */
 	ByteStream(char* pBuf, size_t size) noexcept; 
@@ -76,19 +68,17 @@ public:
 	 */
 	ByteStream& operator=(const ByteStream& other);
 
-	// Move constructor
-	// The move contructor is called instead of the default constructor
-	// and ,,steals" the ressources of the argument (,,ressource stealing")
+	/*! @brief Move constructor
+	 *
+	 * Invokes copy constructor ByteStream(const ByteStream& stream) internally. Does not perform a self-assignemnt test.
+	 *
+	 * @param[in] other The ByteStream instance from which the resources are stolen
+	 */
 	ByteStream(ByteStream&& other) noexcept;
 
-	// Move assignment 
+	//! Move assignment 
 	ByteStream& operator=(ByteStream&& other) noexcept;
-
-
-	// https://stackoverflow.com/questions/1639797/template-issue-causes-linker-error-c
-	// Template function muessen in den Header
-	//void write(std::any data);
-
+	
 
 	 /** @name Writing
 	 *  Operators for writing to the stream
@@ -124,7 +114,7 @@ public:
 
 
 	/** @} 
-	 * @name Reading
+	 *  @name Reading
 	 *  Operators for reading from the stream
 	 *  @{
 	 */

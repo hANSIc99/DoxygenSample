@@ -1,12 +1,39 @@
-/*! @mainpage My Personal Index Page
+/*! @mainpage
  *
  * @section intro_sec Introduction
  *
- * This is the introduction.
+ * This example is part of an article published at [opensource.com](https://opensource.com/)
  *
- * @section install_sec Installation
+ * @section install_sec Running the example
+ * 
+ * This example was created using Fedora 33 (x86/64).
  *
- * @subsection step1 Step 1: Opening the box
+ * @subsection step1 System requirements
  *
- * etc...
+ * In order to compile this example, the build essentials must be installed.
+ * 
+ * - Debian derivates
+ * @code{.sh}
+ * sudo apt install build-essential
+ * @endcode
+ * 
+ * - RHEL derivates
+ * @code{.sh}
+ * sudo dnf install make cmake gcc gcc-c++
+ * @endcode
+ *
+ * @subsection step2 Building the code
+ *
+ * 1. Generate the build environment
+ * @code{.sh}
+ * cmake -S <path-to-source-directory> -B <path-to-build-directory>
+ * @endcode
+ *
+ * 2. Start compilation
+ * @code{.sh}
+ * cmake --build <path-to-build-directory>
+ * @endcode
+ *
+ * 3. The binary can now be found here\n
+ * <tt><path-to-build-directory>/DoxygenSample/DoxygenSample</tt>
  */
