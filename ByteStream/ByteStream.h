@@ -31,6 +31,14 @@ namespace BStream {
  */
 
 
+
+/*! @fn size_t ByteStream::size() const 
+ *	@brief Returns the size of the used memory buffer
+ *
+ * The function behaves identicallz for both
+ * internal and external buffers.
+ */
+
 class ByteStream {
 
 public:
@@ -142,7 +150,7 @@ public:
 	
 	//! Returns a pointer to the memory buffer
 	char* 	buffer() const noexcept;
-	//! Returns the size of the used memory buffer
+	
 	size_t	size() const noexcept;
 
 
